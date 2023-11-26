@@ -6,7 +6,6 @@ print('\033[93m' + '-'*60, "\n" + '\033[0m')
 print("\033[1m" + "BUDAPEST ---> BÉCS" + "\033[0m")
 
 #Adatszerkezetek és a változók létrehozása
-
 kocsi_reggel = [['O']*15,['O']*15,['O']*15,['O']*15]
 kocsi_deli = [['O']*15,['O']*15,['O']*15,['O']*15]
 kocsi_este = [['O']*15,['O']*15,['O']*15,['O']*15]
@@ -119,3 +118,9 @@ bekeres_tobbszor()
 bekeres_folytatasa = input("Szeretne még helyeket foglalni? (Igen/Nem) ")
 if bekeres_folytatasa == "Igen" or bekeres_folytatasa == "igen":
     bekeres_tobbszor() 
+
+#adatszerkezet mentése az adatbázisba
+with open('db.txt', 'w', encoding='utf-8') as db:
+        print(kocsi_reggel,file=db)
+        print(kocsi_deli,file=db)
+        print(kocsi_este,file=db)
