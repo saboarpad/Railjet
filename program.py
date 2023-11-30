@@ -1,5 +1,4 @@
 # Információk
-
 print(
     "\x1B[3m" + "\nIKT Python programozás projekt feladat (vonat foglalás)" + "\x1B[0m"
 )
@@ -14,26 +13,9 @@ print("\033[93m" + "-" * 60, "\n" + "\033[0m")
 print("\033[1m" + "BUDAPEST ---> BÉCS" + "\033[0m")
 
 import random
+import json
 import ast
 
-# Meglévő adatszerkezet kiolvasása az adatbázisból vagy új adatbázis létrehozása
-kocsi_reggel = list()
-kocsi_del = list()
-kocsi_este = list()
-ures_vagon = [["O"] * 15, ["O"] * 15, ["O"] * 15, ["O"] * 15]
-adatok = list()
-try:
-    with open("./db.txt", "r") as db:
-        for rekord in db:
-            adatok.append(rekord.strip())
-        kocsi_reggel = ast.literal_eval(adatok[0])
-        kocsi_del = ast.literal_eval(adatok[1])
-        kocsi_este = ast.literal_eval(adatok[2])
-        db.close()
-except:
-    kocsi_reggel = ures_vagon
-    kocsi_del = ures_vagon
-    kocsi_este = ures_vagon
 
 # print("debug: tartalom adatszerkezet megnyitása/létrehozása után:\n")
 # print(f"reggel: {kocsi_reggel}\n")
@@ -50,6 +32,33 @@ foglalasok = []
 nev_foglalas = {}
 sikertelen = 0
 sikeres = 0
+
+# Meglévő foglalások kiolvasása JSON fájlból
+try: 
+    with open('foglalasok.txt', 'r', encoding='UTF-8') as f:
+        foglalasok = json.load(f)
+        f.close()
+except:
+    foglalasok = []
+
+kocsi_reggel = list()
+kocsi_del = list()
+kocsi_este = list()
+
+# Meglévő adatszerkezet kiolvasása az adatbázisból vagy új adatbázis létrehozása
+adatok = list()
+try:
+    with open("./db.txt", "r") as db:
+        for rekord in db:
+            adatok.append(rekord.strip())
+        kocsi_reggel = ast.literal_eval(adatok[0])
+        kocsi_del = ast.literal_eval(adatok[1])
+        kocsi_este = ast.literal_eval(adatok[2])
+        db.close()
+except:
+    kocsi_reggel = [["O"] * 15, ["O"] * 15, ["O"] * 15, ["O"] * 15]
+    kocsi_del = [["O"] * 15, ["O"] * 15, ["O"] * 15, ["O"] * 15]
+    kocsi_este = [["O"] * 15, ["O"] * 15, ["O"] * 15, ["O"] * 15]
 
 # veletlen függvény
 def szabade(napszak, oszlop, sor):
@@ -68,8 +77,6 @@ def szabade(napszak, oszlop, sor):
             return 0
         else:
             return 1
-
-
 # Bekeres
 def beker(i: int):
     print(f"{i+1}. hely foglalása")
@@ -167,7 +174,6 @@ def beker(i: int):
             foglalasok.append(nev_foglalas)
             nev_foglalas = {}
 
-
 def bekeres_tobbszor():
     while True:
         try:
@@ -189,15 +195,18 @@ bekeres_folytatasa = input("Szeretne még helyeket foglalni? (Igen/Nem) ")
 if bekeres_folytatasa == "Igen" or bekeres_folytatasa == "igen":
     bekeres_tobbszor()
 
-
 # print("debug: tartalom adatszerkezet kiírása előtt:\n")
 # print(f"reggel: {kocsi_reggel}\n")
 # print(f"délben: {kocsi_del}\n")
 # print(f"este: {kocsi_este}\n")
 
 # adatszerkezet mentése az adatbázisba
+with open('foglalasok.txt', 'w', encoding='utf-8') as jegyek:
+    json.dump(foglalasok, jegyek, ensure_ascii=False)
+    jegyek.close()
+
 with open("db.txt", "w", encoding="utf-8") as db:
     print(kocsi_reggel, file=db)
     print(kocsi_del, file=db)
     print(kocsi_este, file=db)
-db.close()
+    db.close()
