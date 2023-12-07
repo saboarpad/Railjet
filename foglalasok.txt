@@ -1,0 +1,1 @@
+[{"Név": "Béla", "Indulás": "Reggel", "Sor": 5, "Oszlop": 2}]
