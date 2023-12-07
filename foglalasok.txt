@@ -1,1 +1,0 @@
-[{"Név": "Árpád", "Indulás": "Reggel", "Sor": 1, "Oszlop": 1}]

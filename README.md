@@ -1,2 +1,2 @@
 # Railjet
-Ez egy házi feladat kódtára Python órára.
+Kódtár nullázva
